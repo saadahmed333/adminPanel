@@ -1,0 +1,127 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+.login {
+    background-color: #46bbfe;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.login-container {
+    background-color: White;
+    height: auto;
+    width: 500px;
+    border-radius: 20px;
+    padding-bottom: 20px;
+    color: grey;
+}
+.login-header {
+    display: flex;
+    justify-content: space-between;
+}
+.login-header span {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+    padding: 20px;
+    border-top-right-radius: 20px;
+    border-end-start-radius: 50px;
+}
+.login-header span .icon {
+    font-size: 25px;    
+    margin-right: 10px;
+}
+.signup {
+    background-color: #f4f4f4;
+}
+.profile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
+    margin-top: 10px;
+}
+.profile .profile-icon-div .profile-icon {
+    background-color: #f4f4f4;
+    padding: 25px;
+    border-radius: 40px;
+}
+.profile .profile-icon-div .profile-icon {
+    font-size: 100px;
+}
+.login-form {
+    margin-top: 20px;
+}
+.login-form form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+.login-form form .login-email-input {
+    background-color: burlywood;
+    padding: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    border-radius: 30px;
+    background-color: #f4f4f4;
+}
+.login-form form .login-email-input input {
+    height: 30px;
+    width: 350px;
+    border: none;
+    outline: none;
+    background-color: #f4f4f4;
+    padding-left: 10px;
+    font-size: 20px;
+}
+.login-form form .login-password-input {
+    background-color: burlywood;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    border-radius: 30px;
+    background-color: #f4f4f4;
+}
+.login-form form .login-password-input input {
+    height: 30px;
+    width: 350px;
+    border: none;
+    outline: none;
+    background-color: #f4f4f4;
+    padding-left: 10px;
+    font-size: 20px;
+}
+.login-form .login-email-input-icon {
+    font-size: 30px;
+}
+.login-btn {
+    margin-top: 50px;
+}
+.login-btn button {
+    font-size: 20px;
+    padding: 15px 70px;
+    border-radius: 25px;
+    background-color: #46bbfe;
+    border: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+.goto-signup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    font-size: 20px;
+}
+.goto-signup a {
+    text-decoration: none;
+    color: grey;
+}
