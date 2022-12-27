@@ -29,8 +29,6 @@
     align-items: center;
     font-size: 25px;
     padding: 20px;
-    border-top-right-radius: 20px;
-    border-end-start-radius: 50px;
 }
 .login-header span .icon {
     font-size: 25px;    
@@ -38,6 +36,13 @@
 }
 .signup {
     background-color: #f4f4f4;
+    border-top-right-radius: 20px;
+    border-end-start-radius: 50px;
+}
+.Login {
+    background-color: #f4f4f4;
+    border-bottom-right-radius: 50px;
+    border-top-left-radius: 20px;
 }
 .profile {
     display: flex;
@@ -124,4 +129,25 @@
 .goto-signup a {
     text-decoration: none;
     color: grey;
+}
+
+
+
+.login-form form .login-confirmpassword-input {
+    background-color: burlywood;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    border-radius: 30px;
+    background-color: #f4f4f4;
+    margin-top: 15px;
+}
+.login-form form .login-confirmpassword-input input {
+    height: 30px;
+    width: 350px;
+    border: none;
+    outline: none;
+    background-color: #f4f4f4;
+    padding-left: 10px;
+    font-size: 20px;
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "../css/login.css";
 import { BiExit } from "react-icons/bi";
 import { BiUserPlus } from "react-icons/bi";
@@ -34,11 +35,11 @@ const Login = () => {
             <input type="password" />
             </div>
             <div className="login-btn">
-                <button>Log in</button>
+                <Link to={"/admin"}><button>Log in</button></Link>
             </div>
         </form>
         <div className="goto-signup">
-           <a href=".">Sign Up</a>
+           <Link to={"/signup"}>Sign Up</Link>
         </div>
         </div>
       </div>
