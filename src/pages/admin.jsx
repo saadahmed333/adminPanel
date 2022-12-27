@@ -1,22 +1,50 @@
-import React, { useState } from "react";
-import "../css/admin.css";
-import { AiOutlineArrowLeft, AiFillEdit, AiFillDelete } from "react-icons/ai";
-import { Link } from "react-router-dom";
-import { Button, Modal } from "antd";
+import React, { useState, useEffect } from 'react'
+import '../css/admin.css'
+import { AiOutlineArrowLeft, AiFillEdit, AiFillDelete } from 'react-icons/ai'
+import { Link } from 'react-router-dom'
+import { Modal } from 'antd'
+import axios from 'axios'
 const Admin = () => {
-  const [modal2Open, setModal2Open] = useState(false);
+  const [modal2Open, setModal2Open] = useState(false)
+  const [data, setData] = useState([])
+  console.log(process.env.REACT_APP_BASE_URL, '<==base url')
+  const url = 'http://192.168.50.245:3001/api/product';
+
+  const getData = async () => {
+    try {
+      console.log('i ran')
+      console.log(`${process.env.REACT_APP_BASE_URL}/product, 'base url'`)
+      const res = await axios.get(url)
+      console.log(res, '<==== res')
+      console.log(res.data, '<==== RES DATA')
+      console.log(res.data.results, '<==== RES DATA RESULT')
+
+
+
+      if (res) {
+        console.log(res, '<====ressss')
+      }
+      // setData(res.data)
+      console.log(res, '<==== data')
+    } catch (e) {
+      console.log(e, '<====== eror')
+    }
+  }
+
+  useEffect(() => {
+    getData()
+  }, [])
+
   return (
     <>
       <div className="back">
-        <Link to={"/"}>
+        <Link to={'/'}>
           <AiOutlineArrowLeft className="back-icon" />
         </Link>
       </div>
       <div className="Add">
         <button onClick={() => setModal2Open(true)}>Add</button>
       </div>
-
-
 
       {/* Add Modal  */}
       <div className="modal">
@@ -27,29 +55,27 @@ const Admin = () => {
           onOk={() => setModal2Open(false)}
           onCancel={() => setModal2Open(false)}
         >
-            <form> 
-              <div className="modal-data">
-                <label htmlFor="">Sports</label>
-                <input type="text" />
-              </div>
-              <div className="modal-data">
-                <label htmlFor="">Sports Image</label>
-                <input type="text" />
-              </div>
-              <div className="modal-data">
-                <label htmlFor="">Positions</label>
-                <input type="text" />
-              </div>
-              <div className="modal-data last">
-                <label htmlFor="">Additional Details</label>
-                <input type="text" />
-              </div>
-            </form>
+          <form>
+            <div className="modal-data">
+              <label htmlFor="">Sports</label>
+              <input type="text" />
+            </div>
+            <div className="modal-data">
+              <label htmlFor="">Sports Image</label>
+              <input type="text" />
+            </div>
+            <div className="modal-data">
+              <label htmlFor="">Positions</label>
+              <input type="text" />
+            </div>
+            <div className="modal-data last">
+              <label htmlFor="">Additional Details</label>
+              <input type="text" />
+            </div>
+          </form>
         </Modal>
       </div>
 
-
-    
       <div className="table-div">
         <table cellSpacing={20}>
           <tr>
@@ -138,7 +164,7 @@ const Admin = () => {
         </table>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Admin;
+export default Admin
