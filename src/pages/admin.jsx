@@ -7,25 +7,18 @@ import axios from 'axios'
 const Admin = () => {
   const [modal2Open, setModal2Open] = useState(false)
   const [data, setData] = useState([])
-  console.log(process.env.REACT_APP_BASE_URL, '<==base url')
-  const url = 'http://192.168.50.245:3001/api/product';
+  // console.log(process.env.REACT_APP_BASE_URL, '<==base url')
+  const url = 'http://192.168.50.245:3001/api/product'
+  const asseturl = 'http://192.168.50.245:3001/assets/'
+
+
+
 
   const getData = async () => {
     try {
-      console.log('i ran')
-      console.log(`${process.env.REACT_APP_BASE_URL}/product, 'base url'`)
       const res = await axios.get(url)
-      console.log(res, '<==== res')
-      console.log(res.data, '<==== RES DATA')
-      console.log(res.data.results, '<==== RES DATA RESULT')
-
-
-
-      if (res) {
-        console.log(res, '<====ressss')
-      }
-      // setData(res.data)
-      console.log(res, '<==== data')
+      // console.log(res.data.results, '<==== RES DATA RESULT')
+      setData(res.data.results)
     } catch (e) {
       console.log(e, '<====== eror')
     }
@@ -35,6 +28,31 @@ const Admin = () => {
     getData()
   }, [])
 
+  let count = 0
+
+
+const [name, setName] = useState();
+const [description, setDescription] = useState();
+const [price, setPrice] = useState();
+const [quantity, setQuantity] = useState();
+const [image, setImage] = useState();
+
+  const post = () => {
+    console.log(name)
+    axios.post(url, {
+      name,
+      description,
+      price,
+      quantity,
+      image
+    })
+    .then( (response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
   return (
     <>
       <div className="back">
@@ -52,25 +70,32 @@ const Admin = () => {
           title="Add Data"
           centered
           open={modal2Open}
-          onOk={() => setModal2Open(false)}
+          onOk={() => {
+            post()
+            setModal2Open(false);
+          }}
           onCancel={() => setModal2Open(false)}
         >
           <form>
             <div className="modal-data">
-              <label htmlFor="">Sports</label>
-              <input type="text" />
+              <label htmlFor="">Name</label>
+              <input type="text"  onChange={(e) => {setName(e.target.value)}}/>
             </div>
             <div className="modal-data">
-              <label htmlFor="">Sports Image</label>
-              <input type="text" />
+              <label htmlFor="">Description</label>
+              <input type="text" onChange={(e) => {setDescription(e.target.value)}} />
             </div>
             <div className="modal-data">
-              <label htmlFor="">Positions</label>
-              <input type="text" />
+              <label htmlFor="">Price</label>
+              <input type="number" onChange={(e) => {setPrice(e.target.value)}} />
             </div>
             <div className="modal-data last">
-              <label htmlFor="">Additional Details</label>
-              <input type="text" />
+              <label htmlFor="">Quantity</label>
+              <input type="number" onChange={(e) => {setQuantity(e.target.value)}} />
+            </div>
+            <div className="modal-data last">
+              <label htmlFor="">Quantity</label>
+             <input type="file" onChange={(e) => {setImage(e.target.value)}} />
             </div>
           </form>
         </Modal>
@@ -80,87 +105,38 @@ const Admin = () => {
         <table cellSpacing={20}>
           <tr>
             <th>No</th>
-            <th>Sports</th>
-            <th>Sports Image</th>
-            <th>Positions</th>
-            <th>Additional Details</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Image</th>
+            <th>Price</th>
+            <th>Quantity</th>
             <th>Action</th>
           </tr>
-          <tr>
-            <td>1</td>
-            <td>Maria Anders</td>
-            <td>Germany</td>
-            <td>Alfreds Futterkiste</td>
-            <td>Maria Anders</td>
-            <td className="actions-icon">
-              <span>
-                <AiFillEdit className="edit" />
-              </span>
-              <span>
-                <AiFillDelete className="delete" />
-              </span>
-            </td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Francisco Chang</td>
-            <td>Mexico</td>
-            <td>Alfreds Futterkiste</td>
-            <td>Maria Anders</td>
-            <td className="actions-icon">
-              <span>
-                <AiFillEdit className="edit" />
-              </span>
-              <span>
-                <AiFillDelete className="delete" />
-              </span>
-            </td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>Francisco Chang</td>
-            <td>Mexico</td>
-            <td>Alfreds Futterkiste</td>
-            <td>Maria Anders</td>
-            <td className="actions-icon">
-              <span>
-                <AiFillEdit className="edit" />
-              </span>
-              <span>
-                <AiFillDelete className="delete" />
-              </span>
-            </td>
-          </tr>
-          <tr>
-            <td>4</td>
-            <td>Francisco Chang</td>
-            <td>Mexico</td>
-            <td>Alfreds Futterkiste</td>
-            <td>Maria Anders</td>
-            <td className="actions-icon">
-              <span>
-                <AiFillEdit className="edit" />
-              </span>
-              <span>
-                <AiFillDelete className="delete" />
-              </span>
-            </td>
-          </tr>
-          <tr>
-            <td>5</td>
-            <td>Francisco Chang</td>
-            <td>Mexico</td>
-            <td>Alfreds Futterkiste</td>
-            <td>Maria Anders</td>
-            <td className="actions-icon">
-              <span>
-                <AiFillEdit className="edit" />
-              </span>
-              <span>
-                <AiFillDelete className="delete" />
-              </span>
-            </td>
-          </tr>
+          {data.map((value, index) => {
+            count = count + 1
+            return (
+              <tr key={index}>
+                <td>{'0' + count}</td>
+                <td>{value.name}</td>
+                <td>{value.description}</td>
+                <th className="images">
+                  {
+                  <img src={asseturl + value.images[0]} alt="" />
+                  }
+                </th>
+                <td>{value.price}</td>
+                <td>{value.quantity}</td>
+                <td className="actions-icon">
+                  <span>
+                    <AiFillEdit className="edit" />
+                  </span>
+                  <span>
+                    <AiFillDelete className="delete" />
+                  </span>
+                </td>
+              </tr>
+            )
+          })}
         </table>
       </div>
     </>

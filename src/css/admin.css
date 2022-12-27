@@ -83,3 +83,13 @@
     height: 40px;
     border-radius: 20px;
 }
+.images {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+}
+.images img {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+}
