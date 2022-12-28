@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import '../css/admin.css'
 import { AiOutlineArrowLeft, AiFillEdit, AiFillDelete } from 'react-icons/ai'
 import { Link } from 'react-router-dom'
@@ -18,6 +18,7 @@ const Admin = () => {
   const [changeOccured, setChangeOccured] = useState(false)
   const url = 'http://192.168.50.245:3001/api/product'
   const deleteurl = `http://192.168.50.245:3001/api/product/`
+  const editurl = `http://192.168.50.245:3001/api/product/`
   const asseturl = 'http://192.168.50.245:3001/assets/'
 
   const getData = async () => {
@@ -70,6 +71,42 @@ const Admin = () => {
     getData()
   }, [changeOccured])
 
+  const [namevalue, setNamevalue] = useState()
+  const [pricevalue, setPricevalue] = useState()
+  const [quantityvalue, setQuantityvalue] = useState()
+  const [descriptionvalue, setDescriptionvalue] = useState()
+  const [imagevalue, setImagevalue] = useState()
+  const [idValue, setIdvalue] = useState()
+
+  const updateData = (name, description, price, quantity, images, id) => {
+    setModal1Open(true)
+    setNamevalue(name)
+    setPricevalue(price)
+    setDescriptionvalue(description)
+    setQuantityvalue(quantity)
+    setImagevalue(images)
+    setIdvalue(id)
+  }
+  const editData = async () => {
+    console.log(idValue)
+    const editForm = new FormData()
+    editForm.append('name', namevalue)
+    editForm.append('description', descriptionvalue)
+    editForm.append('price', pricevalue)
+    editForm.append('quantity', quantityvalue)
+    editForm.append('images', imagevalue)
+    try {
+      const res = await axios.patch(editurl + idValue, editForm, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      console.log(res)
+      setChangeOccured(!changeOccured)
+    } catch (e) {
+      console.log(e, '<===error')
+    }
+  }
 
   return (
     <>
@@ -155,6 +192,7 @@ const Admin = () => {
           centered
           open={modal1Open}
           onOk={() => {
+            editData()
             setModal1Open(false)
           }}
           onCancel={() => setModal1Open(false)}
@@ -162,23 +200,42 @@ const Admin = () => {
           <form>
             <div className="modal-data">
               <label htmlFor="">Name</label>
-              <input type="text" />
+              <input
+                type="text"
+                value={namevalue}
+                onChange={(e) => setNamevalue(e.target.value)}
+              />
             </div>
             <div className="modal-data">
               <label htmlFor="">Description</label>
-              <input type="text" />
+              <input
+                type="text"
+                value={descriptionvalue}
+                onChange={(e) => setDescriptionvalue(e.target.value)}
+              />
             </div>
             <div className="modal-data">
               <label htmlFor="">Price</label>
-              <input type="number" />
+              <input
+                type="number"
+                value={pricevalue}
+                onChange={(e) => setPricevalue(e.target.value)}
+              />
             </div>
             <div className="modal-data">
               <label htmlFor="">Quantity</label>
-              <input type="number" />
+              <input
+                type="number"
+                value={quantityvalue}
+                onChange={(e) => setQuantityvalue(e.target.value)}
+              />
             </div>
             <div className="modal-data last">
               <label htmlFor="">Images</label>
-              <input type="file" />
+              <input
+                type="file"
+                onChange={(e) => setImagevalue(e.target.files[0])}
+              />
             </div>
           </form>
         </Modal>
@@ -214,7 +271,17 @@ const Admin = () => {
                     <span>
                       <AiFillEdit
                         className="edit"
-                        onClick={() => setModal1Open(true)}
+                        onClick={() => {
+                          updateData(
+                            value.name,
+                            value.description,
+                            value.price,
+                            value.quantity,
+                            asseturl + value.images[0],
+                            value.id,
+                          )
+                          console.log(asseturl + value.images[0])
+                        }}
                       />
                     </span>
                     <span>
