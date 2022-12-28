@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import '../css/admin.css'
 import { AiOutlineArrowLeft, AiFillEdit, AiFillDelete } from 'react-icons/ai'
 import { Link } from 'react-router-dom'
@@ -62,14 +62,11 @@ const Admin = () => {
     try {
       const del = await axios.delete(deleteurl + id)
       setChangeOccured(!changeOccured)
+      console.log(del)
     } catch (e) {
       console.log(e)
     }
   }
-
-  useEffect(() => {
-    getData()
-  }, [changeOccured])
 
   const [namevalue, setNamevalue] = useState()
   const [pricevalue, setPricevalue] = useState()
@@ -107,6 +104,14 @@ const Admin = () => {
       console.log(e, '<===error')
     }
   }
+
+
+  
+  useEffect(() => {
+    getData()
+  }, [changeOccured])
+
+
 
   return (
     <>
@@ -168,7 +173,7 @@ const Admin = () => {
                 }}
               />
             </div>
-            <div className="modal-data last">
+            <div className="modal-data">
               <label htmlFor="">Images</label>
               <input
                 type="file"
@@ -176,6 +181,19 @@ const Admin = () => {
                   console.log(e.target.files, '<==== files')
                   console.log(e.target.files[0], '<==== file 1')
                   setImage(e.target.files[0])
+
+                  console.log(image, '<=== state img')
+                }}
+              />
+            </div>
+            <div className="modal-data last">
+              <label htmlFor="">Images</label>
+              <input
+                type="file"
+                onChange={(e) => {
+                  console.log(e.target.files, '<==== files')
+                  console.log(e.target.files[0], '<==== file 1')
+                  setImage(...image, e.target.files[0])
 
                   console.log(image, '<=== state img')
                 }}

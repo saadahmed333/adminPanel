@@ -28,15 +28,15 @@ const Signup = () => {
           <form>
             <div className="login-email-input">
               <RiUser3Line className="login-email-input-icon" />
-              <input type="text" />
+              <input type="text" placeholder="Username or e-mail" />
             </div>
             <div className="login-password-input">
               <AiOutlineLock className="login-email-input-icon" />
-              <input type="password" />
+              <input type="password" placeholder="Password" />
             </div>
             <div className="login-confirmpassword-input">
               <AiOutlineLock className="login-email-input-icon" />
-              <input type="password" />
+              <input type="password" placeholder="Confirm password" />
             </div>
             <div className="login-btn">
               <button>Sign Up</button>

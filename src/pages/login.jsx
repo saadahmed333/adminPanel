@@ -28,11 +28,11 @@ const Login = () => {
         <form>
             <div className="login-email-input">
             <RiUser3Line className="login-email-input-icon"/>
-            <input type="text" />
+            <input type="text" placeholder="Username or e-mail" />
             </div>
             <div className="login-password-input">
             <AiOutlineLock className="login-email-input-icon"/>
-            <input type="password" />
+            <input type="password" placeholder="Password" />
             </div>
             <div className="login-btn">
                 <Link to={"/admin"}><button>Log in</button></Link>

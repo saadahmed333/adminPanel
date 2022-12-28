@@ -86,6 +86,10 @@
     padding-left: 10px;
     font-size: 20px;
 }
+.login-form form .login-email-input ::placeholder {
+    color: grey;
+    font-size: 18px;
+}
 .login-form form .login-password-input {
     background-color: burlywood;
     padding: 15px;
@@ -102,6 +106,10 @@
     background-color: #f4f4f4;
     padding-left: 10px;
     font-size: 20px;
+}
+.login-form form .login-password-input ::placeholder {
+    color: grey;
+    font-size: 16px;
 }
 .login-form .login-email-input-icon {
     font-size: 30px;
@@ -130,9 +138,6 @@
     text-decoration: none;
     color: grey;
 }
-
-
-
 .login-form form .login-confirmpassword-input {
     background-color: burlywood;
     padding: 15px;
@@ -150,4 +155,7 @@
     background-color: #f4f4f4;
     padding-left: 10px;
     font-size: 20px;
+}
+.login-form form .login-confirmpassword-input ::placeholder {
+    font-size: 16px;
 }
