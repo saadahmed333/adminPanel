@@ -14,8 +14,9 @@ const Index = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />}></Route>
+        <Route  element={dataa ? <Admin /> : <Login />}></Route>
         <Route path="signup" element={<Signup />}></Route>
-        <Route path="admin" element={<Admin />}></Route>
+        {/* <Route path="admin" element={<Admin />}></Route> */}
       </Routes>
     </BrowserRouter>
   );
