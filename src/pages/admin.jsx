@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import '../css/admin.css'
 import { AiOutlineArrowLeft, AiFillEdit, AiFillDelete } from 'react-icons/ai'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import { Modal } from 'antd'
 import axios from 'axios'
 import swal from 'sweetalert'
+import userContext from '../context'
 const Admin = () => {
   const [modal1Open, setModal1Open] = useState(false)
   const [modal2Open, setModal2Open] = useState(false)
@@ -12,10 +13,18 @@ const Admin = () => {
   const [description, setDescription] = useState()
   const [price, setPrice] = useState()
   const [quantity, setQuantity] = useState()
-  const [image, setImage] = useState()
+  const [image, setImage] = useState([])
   const [id, setId] = useState()
   const [data, setData] = useState([])
   const [changeOccured, setChangeOccured] = useState(false)
+  
+  const [namevalue, setNamevalue] = useState()
+  const [pricevalue, setPricevalue] = useState()
+  const [quantityvalue, setQuantityvalue] = useState()
+  const [descriptionvalue, setDescriptionvalue] = useState()
+  const [imagevalue, setImagevalue] = useState()
+  const [idValue, setIdvalue] = useState()
+
   const url = 'http://192.168.50.245:3001/api/product'
   const deleteurl = `http://192.168.50.245:3001/api/product/`
   const editurl = `http://192.168.50.245:3001/api/product/`
@@ -41,10 +50,10 @@ const Admin = () => {
     formData.append('description', description)
     formData.append('price', price)
     formData.append('quantity', quantity)
-    formData.append('images', image)
-    console.log(name)
-    console.log(image)
-    console.log(formData)
+    for (let i = 0; i < image.length; i++) {
+      formData.append('images', image[i])
+      console.log(image[i])
+  }
     try {
       const res = await axios.post(url, formData, {
         headers: {
@@ -68,12 +77,6 @@ const Admin = () => {
     }
   }
 
-  const [namevalue, setNamevalue] = useState()
-  const [pricevalue, setPricevalue] = useState()
-  const [quantityvalue, setQuantityvalue] = useState()
-  const [descriptionvalue, setDescriptionvalue] = useState()
-  const [imagevalue, setImagevalue] = useState()
-  const [idValue, setIdvalue] = useState()
 
   const updateData = (name, description, price, quantity, images, id) => {
     setModal1Open(true)
@@ -112,6 +115,14 @@ const Admin = () => {
   }, [changeOccured])
 
 
+  const [loggedout, setLoggedout] = useState(false);
+
+  const localRemove = () => {
+    console.log("saad")
+    localStorage.removeItem("email")
+    localStorage.removeItem("id")
+    setLoggedout(!loggedout)
+  }
 
   return (
     <>
@@ -121,6 +132,8 @@ const Admin = () => {
         </Link>
       </div>
       <div className="Add">
+      <button onClick={localRemove}>Log Out</button>
+      {loggedout && (<Navigate to="/"/>)}
         <button onClick={() => setModal2Open(true)}>Add</button>
       </div>
 
@@ -176,29 +189,30 @@ const Admin = () => {
             <div className="modal-data">
               <label htmlFor="">Images</label>
               <input
-                type="file"
+                type="file" multiple
                 onChange={(e) => {
+                  // imageHandle(e)
                   console.log(e.target.files, '<==== files')
                   console.log(e.target.files[0], '<==== file 1')
-                  setImage(e.target.files[0])
+                  setImage(e.target.files)
 
                   console.log(image, '<=== state img')
                 }}
               />
             </div>
-            <div className="modal-data last">
+            {/* <div className="modal-data last">
               <label htmlFor="">Images</label>
               <input
                 type="file"
                 onChange={(e) => {
                   console.log(e.target.files, '<==== files')
                   console.log(e.target.files[0], '<==== file 1')
-                  setImage(...image, e.target.files[0])
-
+                  setImage(image.push(e.target.files[0]))
+                  console.log(image)
                   console.log(image, '<=== state img')
                 }}
               />
-            </div>
+            </div> */}
           </form>
         </Modal>
       </div>
@@ -281,7 +295,13 @@ const Admin = () => {
                   <td>{value.name}</td>
                   <td>{value.description}</td>
                   <th className="images">
-                    <img src={asseturl + value.images[0]} alt="" />
+                    {
+                      value.images.map((v,i) => {
+                        return (
+                          <img key={i} src={asseturl + v} alt="" />
+                        )
+                      })
+                    }
                   </th>
                   <td>{value.price}</td>
                   <td>{value.quantity}</td>

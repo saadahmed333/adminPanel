@@ -5,12 +5,13 @@ import { BiUserPlus } from "react-icons/bi";
 import { FaUserAlt } from "react-icons/fa";
 import { RiUser3Line } from "react-icons/ri";
 import { AiOutlineLock, AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
 const Signup = () => {
   const signupUrl = "http://192.168.50.245:3001/api/user";
   const [username, setUsername] = useState();
   const [signupEmail, setSignupEmail] = useState();
+  const [signin, setSignin] = useState();
   const [signupPassword, setSignupPassword] = useState({
     password: "",
     showPassword: false,
@@ -48,6 +49,7 @@ const Signup = () => {
         email: signupEmail,
         password: signupPassword.password
       })
+      setSignin(!signin)
       console.log(res)
     } catch (e) {
       console.log(e)
@@ -132,6 +134,7 @@ const Signup = () => {
             </div>
             <div className="login-btn">
               <button onClick={signupButton}>Sign Up</button>
+              {signin && (<Navigate to="/"/>)}
             </div>
           </form>
           <div className="goto-signup">

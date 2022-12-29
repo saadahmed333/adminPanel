@@ -23,8 +23,8 @@
 }
 .Add {
     display: flex;
-    justify-content: end;
-    padding: 20px 80px;
+    justify-content: space-between;
+    padding: 20px 80px 0px 30px;
 }
 .Add button {
     background-color: #46bbfe;
@@ -85,9 +85,7 @@
     border-radius: 20px;
 }
 .images {
-    height: 100px;
-    width: 100px;
-    border-radius: 50%;
+    width: 300px; 
 }
 .images img {
     height: 100px;

@@ -7,6 +7,7 @@ import { FaUserAlt } from "react-icons/fa";
 import { RiUser3Line } from "react-icons/ri";
 import { AiOutlineLock, AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import axios from "axios";
+import userContext from "../context";
 const Login = () => {
   const [email, setEmail] = useState();
   const [error, setError] = useState();
@@ -34,11 +35,10 @@ const Login = () => {
       setLoggedIn(!loggedIn)
       console.log(res);
       console.log(res.data);
-      
-
       setError("");
-
-     
+     localStorage.setItem("email", res.data.user.email)
+     localStorage.setItem("id", res.data.user.id)
+     console.log(res.data.user.email, "=====> email")
       
     } catch (e) {
       console.log(e);
@@ -51,6 +51,8 @@ const Login = () => {
 
 
   return (
+    
+    <userContext.Provider value={loggedIn}>
     <div className="login">
       <div className="login-container">
         <div className="login-header">
@@ -114,6 +116,7 @@ const Login = () => {
         </div>
       </div>
     </div>
+    </userContext.Provider>
   );
 };
 
