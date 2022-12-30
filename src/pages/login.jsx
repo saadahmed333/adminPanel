@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Link, Navigate, redirect } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, Navigate } from "react-router-dom";
 import "../css/login.css";
 import { BiExit } from "react-icons/bi";
 import { BiUserPlus } from "react-icons/bi";

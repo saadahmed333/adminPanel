@@ -13,9 +13,14 @@ const Index = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Login />}></Route>
-        <Route  element={dataa ? <Admin /> : <Login />}></Route>
+        {/* <Route path="/" element={<Login />}></Route> */}
+        {/* <Route  element={dataa ? <Admin /> : <Login />}></Route> */}
         <Route path="signup" element={<Signup />}></Route>
+        {dataa ? (
+        <Route path="admin" element={<Admin />}  />
+    ) : (
+      <Route path="/" element={<Login />}  />
+    )}
         {/* <Route path="admin" element={<Admin />}></Route> */}
       </Routes>
     </BrowserRouter>
