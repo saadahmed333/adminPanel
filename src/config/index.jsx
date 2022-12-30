@@ -6,22 +6,12 @@ import Login from "../pages/login";
 import { useContext } from "react";
 import userContext from "../context";
 const Index = () => {
-  const email = localStorage.getItem("email");
-  console.log(email);
-  const dataa = useContext(userContext);
-  console.log(dataa);
   return (
     <BrowserRouter>
       <Routes>
-        {/* <Route path="/" element={<Login />}></Route> */}
-        {/* <Route  element={dataa ? <Admin /> : <Login />}></Route> */}
+        <Route path="/" element={<Login />}></Route>
         <Route path="signup" element={<Signup />}></Route>
-        {dataa ? (
-        <Route path="admin" element={<Admin />}  />
-    ) : (
-      <Route path="/" element={<Login />}  />
-    )}
-        {/* <Route path="admin" element={<Admin />}></Route> */}
+        <Route path="admin" element={<Admin />}></Route>
       </Routes>
     </BrowserRouter>
   );

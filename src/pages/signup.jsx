@@ -38,11 +38,6 @@ const Signup = () => {
   };
 
  const postUser = async () => {
-    const formData = new FormData()
-    formData.append('username', username)
-    formData.append('email', signupEmail)
-    formData.append('password', signupPassword.password)
-    console.log(formData)
     try {
       const res = await axios.post(signupUrl, {
         username: username,
