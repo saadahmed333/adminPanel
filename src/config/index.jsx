@@ -3,8 +3,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Admin from "../pages/admin";
 import Signup from "../pages/signup";
 import Login from "../pages/login";
-import { useContext } from "react";
-import userContext from "../context";
 const Index = () => {
   return (
     <BrowserRouter>

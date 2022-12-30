@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState } from "react";
 import "../css/login.css";
 import { BiExit } from "react-icons/bi";
 import { BiUserPlus } from "react-icons/bi";
@@ -10,56 +10,72 @@ import axios from "axios";
 const Signup = () => {
   const signupUrl = "http://192.168.50.245:3001/api/user";
   const [username, setUsername] = useState();
+  const [error, setError] = useState();
   const [signupEmail, setSignupEmail] = useState();
   const [signin, setSignin] = useState();
+  const [button, setButton] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [signupPassword, setSignupPassword] = useState({
     password: "",
     showPassword: false,
   });
-  
+
   const handleClickShowPassword = () => {
-    setSignupPassword({ ...signupPassword, showPassword: !signupPassword.showPassword });
+    setSignupPassword({
+      ...signupPassword,
+      showPassword: !signupPassword.showPassword,
+    });
   };
   const handlePasswordChange = (prop) => (event) => {
     setSignupPassword({ ...signupPassword, [prop]: event.target.value });
   };
 
-
   const [signupConfirmPassword, setSignupConfirmPassword] = useState({
     password: "",
     showPassword: false,
   });
-  
+
   const handleClickConfirmShowPassword = () => {
-    setSignupConfirmPassword({ ...signupConfirmPassword, showPassword: !signupConfirmPassword.showPassword });
+    setSignupConfirmPassword({
+      ...signupConfirmPassword,
+      showPassword: !signupConfirmPassword.showPassword,
+    });
   };
   const handleConfirmPasswordChange = (prop) => (event) => {
-    setSignupConfirmPassword({ ...signupConfirmPassword, [prop]: event.target.value });
+    setSignupConfirmPassword({
+      ...signupConfirmPassword,
+      [prop]: event.target.value,
+    });
   };
 
- const postUser = async () => {
+  const postUser = async () => {
     try {
       const res = await axios.post(signupUrl, {
         username: username,
         email: signupEmail,
-        password: signupPassword.password
-      })
-      setSignin(!signin)
-      console.log(res)
+        password: signupPassword.password,
+      });
+      setError("");
+      setButton(false);
+      setLoading(!loading);
+      setTimeout(() => {
+        setSignin(!signin);
+      }, 2000);
+      console.log(res);
     } catch (e) {
-      console.log(e)
+      console.log(e);
+      setError(e.response.data.message);
     }
-  }
-
+  };
 
   const signupButton = (event) => {
     event.preventDefault();
-    postUser()
-    console.log(username)
-    console.log(signupEmail)
-    console.log(signupPassword.password)
-    console.log(signupConfirmPassword.password)
-  }
+    postUser();
+    console.log(username);
+    console.log(signupEmail);
+    console.log(signupPassword.password);
+    console.log(signupConfirmPassword.password);
+  };
   return (
     <div className="login">
       <div className="login-container">
@@ -79,16 +95,24 @@ const Signup = () => {
         </div>
         <div className="login-form">
           <form>
-          <div className="login-email-input">
+            <div className="login-email-input">
               <RiUser3Line className="login-email-input-icon" />
-              <input type="text" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
+              <input
+                type="text"
+                placeholder="Username"
+                onChange={(e) => setUsername(e.target.value)}
+              />
             </div>
             <div className="login-email-input">
               <RiUser3Line className="login-email-input-icon" />
-              <input type="text" placeholder="e-mail" onChange={(e) => setSignupEmail(e.target.value)} />
+              <input
+                type="text"
+                placeholder="e-mail"
+                onChange={(e) => setSignupEmail(e.target.value)}
+              />
             </div>
             <div className="login-password-input">
-            <AiOutlineLock className="login-email-input-icon" />
+              <AiOutlineLock className="login-email-input-icon" />
               <input
                 placeholder="Password"
                 type={signupPassword.showPassword ? "text" : "password"}
@@ -108,7 +132,7 @@ const Signup = () => {
               )}
             </div>
             <div className="login-confirmpassword-input">
-            <AiOutlineLock className="login-email-input-icon" />
+              <AiOutlineLock className="login-email-input-icon" />
               <input
                 placeholder="Confirm Password"
                 type={signupConfirmPassword.showPassword ? "text" : "password"}
@@ -127,9 +151,11 @@ const Signup = () => {
                 />
               )}
             </div>
+            <p className="error">{error}</p>
             <div className="login-btn">
-              <button onClick={signupButton}>Sign Up</button>
-              {signin && (<Navigate to="/"/>)}
+              {button && <button onClick={signupButton}>Log in</button>}
+              {loading && <div className="loader"></div>}
+              {signin && <Navigate to="/" />}
             </div>
           </form>
           <div className="goto-signup">
