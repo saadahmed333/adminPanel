@@ -1,155 +1,161 @@
-import React, { useState, useEffect } from "react";
-import "../css/admin.css";
-import { AiOutlineArrowLeft, AiFillEdit, AiFillDelete } from "react-icons/ai";
-import { Link, Navigate } from "react-router-dom";
-import { Modal } from "antd";
-import axios from "axios";
-import swal from "sweetalert";
-// import * as yup from "yup";
-// import { string, number } from "yup";
-import { userSchema } from "../validation/userValidation";
+import React, { useState, useEffect } from 'react'
+import '../css/admin.css'
+import { AiOutlineArrowLeft, AiFillEdit, AiFillDelete } from 'react-icons/ai'
+import { Link, Navigate } from 'react-router-dom'
+import { message, Modal } from 'antd'
+import axios from 'axios'
+import swal from 'sweetalert'
+import * as yup from 'yup'
+import { userSchema } from '../validation/userValidation'
 
 const Admin = () => {
-  const [modal1Open, setModal1Open] = useState(false);
-  const [modal2Open, setModal2Open] = useState(false);
-  const [name, setName] = useState();
-  const [description, setDescription] = useState();
-  const [price, setPrice] = useState();
-  const [quantity, setQuantity] = useState();
-  const [image, setImage] = useState([]);
-  const [id, setId] = useState();
-  const [data, setData] = useState([]);
-  const [changeOccured, setChangeOccured] = useState(false);
+  const [modal1Open, setModal1Open] = useState(false)
+  const [modal2Open, setModal2Open] = useState(false)
+  const [name, setName] = useState()
+  const [description, setDescription] = useState('')
+  const [price, setPrice] = useState()
+  const [quantity, setQuantity] = useState()
+  const [image, setImage] = useState([])
+  const [id, setId] = useState()
+  const [data, setData] = useState([])
+  const [changeOccured, setChangeOccured] = useState(false)
 
-  const [namevalue, setNamevalue] = useState();
-  const [pricevalue, setPricevalue] = useState();
-  const [quantityvalue, setQuantityvalue] = useState();
-  const [descriptionvalue, setDescriptionvalue] = useState();
-  const [imagevalue, setImagevalue] = useState();
-  const [idValue, setIdvalue] = useState();
+  const [namevalue, setNamevalue] = useState()
+  const [pricevalue, setPricevalue] = useState()
+  const [quantityvalue, setQuantityvalue] = useState()
+  const [descriptionvalue, setDescriptionvalue] = useState()
+  const [imagevalue, setImagevalue] = useState()
+  const [idValue, setIdvalue] = useState()
 
-  const url = "http://192.168.50.245:3001/api/product";
-  const deleteurl = `http://192.168.50.245:3001/api/product/`;
-  const editurl = `http://192.168.50.245:3001/api/product/`;
-  const asseturl = "http://192.168.50.245:3001/assets/";
+  // validation error 
+ const [addValidation, setAddValidation] = useState(false)
+ const [errorMessege, setErrorMessege] = useState();
+
+  const url = 'http://192.168.50.245:3001/api/product'
+  const deleteurl = `http://192.168.50.245:3001/api/product/`
+  const editurl = `http://192.168.50.245:3001/api/product/`
+  const asseturl = 'http://192.168.50.245:3001/assets/'
 
   const getData = async () => {
     try {
-      const res = await axios.get(url, { params: { limit: 20 } });
+      const res = await axios.get(url, { params: { limit: 20 } })
       // console.log(res);
       // console.log(res.data);
-      // console.log(res.data.results, "<==== RES DATA RESULT");
-      setData(res.data.results);
+      console.log(res.data.results, "<==== RES DATA RESULT");
+      setData(res.data.results)
     } catch (e) {
-      console.log(e, "<====== eror");
+      console.log(e, '<====== eror')
     }
-  };
+  }
 
-  let count = 0;
+  let count = 0
+
 
   const postData = async () => {
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("description", description);
-    formData.append("price", price);
-    formData.append("quantity", quantity);
-    for (let i = 0; i < image.length; i++) {
-      formData.append("images", image[i]);
-      console.log(image[i]);
-    }
     try {
+      let userData = {
+        name: name,
+        description: description,
+        price: price,
+        quantity: quantity,
+        // images: image,
+      }
+      const validatedData = await userSchema.validate(userData)
+      if(imagevalue == null) {
+        console.log("image")
+      }
+      else {
+        console.log("hogaya")
+      }
+      const formData = new FormData()
+      formData.append('name', validatedData.name)
+      formData.append('description', validatedData.description)
+      formData.append('price', validatedData.price)
+      formData.append('quantity', validatedData.quantity)
+      for (let i = 0; i < image.length; i++) {
+        formData.append('images', image[i])
+        // console.log(image[i])
+      }
       const res = await axios.post(url, formData, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          'Content-Type': 'multipart/form-data',
         },
-      });
-      console.log(res);
-      setChangeOccured(!changeOccured);
+      })
+      setModal2Open(false)
+      console.log(res)
+      setChangeOccured(!changeOccured)
     } catch (e) {
-      console.log(e, "<===error");
+      console.log(e, '<===error')
+      console.log(e.message, '<===error message')
+        setAddValidation(!addValidation)
+        setErrorMessege(e.message)
     }
-  };
+  }
+  useEffect(() => {
+    setAddValidation(!addValidation)
+  }, [errorMessege])
 
   const deleteData = async (id) => {
     try {
-      const del = await axios.delete(deleteurl + id);
-      setChangeOccured(!changeOccured);
-      console.log(del);
+      const del = await axios.delete(deleteurl + id)
+      setChangeOccured(!changeOccured)
+      console.log(del)
     } catch (e) {
-      console.log(e);
+      console.log(e)
     }
-  };
+  }
 
   const updateData = (name, description, price, quantity, images, id) => {
-    setModal1Open(true);
-    setNamevalue(name);
-    setPricevalue(price);
-    setDescriptionvalue(description);
-    setQuantityvalue(quantity);
-    setImagevalue(images);
-    setIdvalue(id);
-  };
+    setModal1Open(true)
+    setNamevalue(name)
+    setPricevalue(price)
+    setDescriptionvalue(description)
+    setQuantityvalue(quantity)
+    setImagevalue(images)
+    setIdvalue(id)
+  }
   const editData = async () => {
-    console.log(idValue);
-    const editForm = new FormData();
-    editForm.append("name", namevalue);
-    editForm.append("description", descriptionvalue);
-    editForm.append("price", pricevalue);
-    editForm.append("quantity", quantityvalue);
-    editForm.append("images", imagevalue);
+    console.log(idValue)
+    const editForm = new FormData()
+    editForm.append('name', namevalue)
+    editForm.append('description', descriptionvalue)
+    editForm.append('price', pricevalue)
+    editForm.append('quantity', quantityvalue)
+    editForm.append('images', imagevalue)
     try {
       const res = await axios.patch(editurl + idValue, editForm, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          'Content-Type': 'multipart/form-data',
         },
-      });
-      console.log(res);
-      setChangeOccured(!changeOccured);
+      })
+      console.log(res)
+      setChangeOccured(!changeOccured)
     } catch (e) {
-      console.log(e, "<===error");
+      console.log(e, '<===error')
     }
-  };
+  }
 
-  useEffect(() => {
-    getData();
-  }, [changeOccured]);
 
-  const [loggedout, setLoggedout] = useState(false);
+  // useEffect(() => {
+  //   getData();
+  // }, [changeOccured]);
+
+  const [loggedout, setLoggedout] = useState(false)
 
   const localRemove = () => {
-    localStorage.removeItem("email");
-    localStorage.removeItem("id");
-    setLoggedout(!loggedout);
-  };
+    localStorage.removeItem('email')
+    localStorage.removeItem('id')
+    setLoggedout(!loggedout)
+  }
 
-  const createUser = async () => {
-    let userData = {
-      name: name,
-      description: description,
-      price: price,
-      quantity: quantity,
-    };
-    const isvalid = await userSchema.isValid(userData);
-    console.log(userData.price)
-    console.log(isvalid, "====> price")
-    for (let i = 0; i < userData.price.length; i++) {
-      console.log(userData.price[i])
-    }
-    // if(isValid.price === null) {
-    //   console.log("good")
-    // }
-    // else {
-    //   console.log("err")
-    // }
-  };
 
   return (
     <>
-      <div className="back">
-        <Link to={"/"}>
+      {/* <div className="back">
+        <Link to={'/'}>
           <AiOutlineArrowLeft className="back-icon" />
         </Link>
-      </div>
+      </div> */}
       <div className="Add">
         <button onClick={localRemove}>Log Out</button>
         {loggedout && <Navigate to="/" />}
@@ -163,19 +169,18 @@ const Admin = () => {
           centered
           open={modal2Open}
           onOk={() => {
-            // postData();
-            // setModal2Open(false);
-            createUser()
+            postData()
           }}
           onCancel={() => setModal2Open(false)}
         >
           <form>
+            { addValidation && <span className='validate'>{errorMessege}</span>}
             <div className="modal-data">
               <label htmlFor="">Name</label>
               <input
                 type="text"
                 onChange={(e) => {
-                  setName(e.target.value);
+                  setName(e.target.value)
                 }}
               />
             </div>
@@ -184,7 +189,7 @@ const Admin = () => {
               <input
                 type="text"
                 onChange={(e) => {
-                  setDescription(e.target.value);
+                  setDescription(e.target.value)
                 }}
               />
             </div>
@@ -193,7 +198,7 @@ const Admin = () => {
               <input
                 type="number"
                 onChange={(e) => {
-                  setPrice(e.target.value);
+                  setPrice(e.target.value)
                 }}
               />
             </div>
@@ -202,7 +207,7 @@ const Admin = () => {
               <input
                 type="number"
                 onChange={(e) => {
-                  setQuantity(e.target.value);
+                  setQuantity(e.target.value)
                 }}
               />
             </div>
@@ -212,28 +217,14 @@ const Admin = () => {
                 type="file"
                 multiple
                 onChange={(e) => {
-                  // imageHandle(e)
-                  console.log(e.target.files, "<==== files");
-                  console.log(e.target.files[0], "<==== file 1");
-                  setImage(e.target.files);
-
-                  console.log(image, "<=== state img");
-                }}
-              />
-            </div>
-            {/* <div className="modal-data last">
-              <label htmlFor="">Images</label>
-              <input
-                type="file"
-                onChange={(e) => {
                   console.log(e.target.files, '<==== files')
                   console.log(e.target.files[0], '<==== file 1')
-                  setImage(image.push(e.target.files[0]))
-                  console.log(image)
+                  setImage(e.target.files)
+
                   console.log(image, '<=== state img')
                 }}
               />
-            </div> */}
+            </div>
           </form>
         </Modal>
       </div>
@@ -245,8 +236,8 @@ const Admin = () => {
           centered
           open={modal1Open}
           onOk={() => {
-            editData();
-            setModal1Open(false);
+            editData()
+            setModal1Open(false)
           }}
           onCancel={() => setModal1Open(false)}
         >
@@ -308,7 +299,7 @@ const Admin = () => {
             </tr>
           </thead>
           {data.map((value, index) => {
-            count = count + 1;
+            count = count + 1
             return (
               <tbody key={index}>
                 <tr>
@@ -317,7 +308,7 @@ const Admin = () => {
                   <td>{value.description}</td>
                   <th className="images">
                     {value.images.map((v, i) => {
-                      return <img key={i} src={asseturl + v} alt="" />;
+                      return <img key={i} src={asseturl + v} alt="" />
                     })}
                   </th>
                   <td>{value.price}</td>
@@ -333,9 +324,9 @@ const Admin = () => {
                             value.price,
                             value.quantity,
                             asseturl + value.images[0],
-                            value.id
-                          );
-                          console.log(asseturl + value.images[0]);
+                            value.id,
+                          )
+                          console.log(asseturl + value.images[0])
                         }}
                       />
                     </span>
@@ -343,31 +334,32 @@ const Admin = () => {
                       <AiFillDelete
                         className="delete"
                         onClick={() => {
-                          setId(value.id);
-                          console.log(id);
+                          setId(value.id)
+                          console.log(id)
                           swal({
-                            title: "Are you sure?",
-                            text: "Once deleted, you will not be able to recover this data!",
-                            icon: "warning",
+                            title: 'Are you sure?',
+                            text:
+                              'Once deleted, you will not be able to recover this data!',
+                            icon: 'warning',
                             buttons: true,
                             dangerMode: true,
                           }).then((willDelete) => {
                             if (willDelete) {
-                              deleteData(value.id);
+                              deleteData(value.id)
                             }
-                          });
+                          })
                         }}
                       />
                     </span>
                   </td>
                 </tr>
               </tbody>
-            );
+            )
           })}
         </table>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Admin;
+export default Admin

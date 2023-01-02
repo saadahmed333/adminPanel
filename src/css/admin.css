@@ -92,3 +92,10 @@
     width: 100px;
     border-radius: 50%;
 }
+.validate {
+    color: red;
+    font-size: 15px;
+    margin-left: 10px;
+    display: flex;
+    justify-content: center;    
+}

@@ -1,8 +1,9 @@
 import * as yup from "yup";
 
-export const userSchema = yup.object().shape({
-    name: yup.string().required(),
-    description: yup.string().required(),
-    price: yup.number().required(),
+export const userSchema = yup.object({
     quantity: yup.number().required(),
-})
+    price: yup.number().required(),
+    description: yup.string('must be a string').required(),
+    name: yup.string().required(),
+    // images: yup.array().required()
+})      
